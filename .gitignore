@@ -1,0 +1,25 @@
+# MATLAB generated files
+*.asv
+*.m~
+*.autosave
+codegen/
+slprj/
+*.slxc
+
+# Video files - do not upload videos
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# Raw and processed data
+data/raw/*
+data/processed/*
+
+# Keep folder structure
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+*.avi
+
+*.avi
