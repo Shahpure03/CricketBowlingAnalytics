@@ -1,21 +1,60 @@
 import cv2
+import os
 
-VIDEO_PATH = "data/raw/bowling1.mp4"
-OUTPUT_PATH = "data/processed/test_frame.jpg"
 
-video = cv2.VideoCapture(VIDEO_PATH)
+def extract_frames(video_path, output_folder):
+    """
+    Extract all frames from a video and save them as image files.
 
-if not video.isOpened():
-    print("Error: Could not open video.")
-    exit()
+    Parameters
+    ----------
+    video_path : str
+        Path to the input video.
 
-success, frame = video.read()
+    output_folder : str
+        Folder where the extracted frames will be saved.
 
-if success:
-    cv2.imwrite(OUTPUT_PATH, frame)
-    print("Frame extracted successfully!")
-    print("Saved to:", OUTPUT_PATH)
-else:
-    print("Error: Could not read frame.")
+    Returns
+    -------
+    int
+        Number of frames extracted.
+    """
 
-video.release()
+    # Open the video
+    video = cv2.VideoCapture(video_path)
+
+    if not video.isOpened():
+        raise ValueError(f"Could not open video: {video_path}")
+
+    # Create output folder if it does not exist
+    os.makedirs(output_folder, exist_ok=True)
+
+    frame_number = 0
+
+    while True:
+
+        # Read one frame
+        success, frame = video.read()
+
+        # Stop when there are no more frames
+        if not success:
+            break
+
+        # Create filename
+        frame_path = os.path.join(
+            output_folder,
+            f"frame_{frame_number:04d}.jpg"
+        )
+
+        # Save frame
+        cv2.imwrite(frame_path, frame)
+
+        frame_number += 1
+
+    # Release video
+    video.release()
+
+    print(f"Extracted {frame_number} frames.")
+    print(f"Frames saved in: {output_folder}")
+
+    return frame_number
